@@ -8,15 +8,28 @@
 
 // Write your code here
 // Write your code here
-package com.example.song; 
+package com.example.song.model;
+import javax.persistence.*; 
  
+ @Entity
+@Table(name="playlist")
 public class Song { 
- 
+
+
+  @Id
+    @Column(name="songId")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int songId; 
+    @Column(name="songName")
     private String songName; 
+    @Column(name="lyricist")
     private String lyricist; 
+    @Column(name="singer")
     private String singer; 
+    @Column(name="musicDirector")
     private String musicDirector; 
+
+    public Song(){ }
  
     public Song(int songId, String songName, String lyricist, String singer, String musicDirector) { 
         this.songId = songId; 

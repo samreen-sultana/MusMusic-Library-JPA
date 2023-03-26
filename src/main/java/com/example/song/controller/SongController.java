@@ -17,18 +17,19 @@
  */
 
 // Write your code here
-package com.example.song.controller; 
- 
-import org.springframework.web.bind.annotation.*; 
-import java.util.*; 
- 
-import com.example.song.model.Song;
+package com.example.song.controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
+
 import com.example.song.service.SongJpaService;
-import org.springframework.beans.factory.annotation.Autowired;; 
- 
+import com.example.song.model.Song;
+
 @RestController 
+  
 public class SongController { 
-    SongService songService = new SongService(); 
+     @Autowired
+   public SongJpaService songService;
  
     @GetMapping("/songs") 
     public ArrayList<Song> getAllSongs() { 

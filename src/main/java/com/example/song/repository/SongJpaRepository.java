@@ -7,14 +7,14 @@
  */
 
 // Write your code here
-package com.example.goodreads.repository;
+package com.example.song.repository;
 
-import com.example.goodreads.model.Book;
+import com.example.song.model.Song;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 @Repository
-public interface SongJpaRepository extends JpaRepository<Book, Integer> {
+public interface SongJpaRepository extends JpaRepository<Song, Integer> {
    
 
 }

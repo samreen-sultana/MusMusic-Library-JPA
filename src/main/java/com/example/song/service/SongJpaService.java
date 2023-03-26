@@ -8,91 +8,84 @@
  */
 
 // Write your code here
-package com.example.song; 
- 
-import org.springframework.http.HttpStatus; 
-import org.springframework.web.server.ResponseStatusException; 
-import java.util.*; 
- 
-import com.example.song.Song; 
-import com.example.song.SongRepository; 
- 
-public class SongService implements SongRepository { 
-    private static HashMap<Integer, Song> playlist = new HashMap<>(); 
- 
-    public SongService() { 
- 
-        playlist.put(1, new Song(1, "Butta Bomma", "Ramajogayya Sastry", "Armaan Malik", "Thaman S")); 
-        playlist.put(2, new Song(2, "Kathari Poovazhagi", "Vijay", "Benny Dayal, Swetha Mohan", "A.R. Rahman")); 
-        playlist.put(3, new Song(3, "Tum Hi Ho", "Mithoon", "Arijit Singh", "Mithoon")); 
-        playlist.put(4, new Song(4, "Vizhiyil", "Vairamuthu", "Unni Menon", "A.R. Rahman")); 
-        playlist.put(5, new Song(5, "Nenjame", "Panchu Arunachalam", "S.P.Balasubrahmanyam", "Ilaiyaraaja")); 
-    } 
- 
-    int uniquesongId = 6; 
- 
-    @Override 
-    public ArrayList<Song> getAllSongs() { 
- 
-        Collection<Song> songCollection = playlist.values(); 
-        ArrayList<Song> allSongs = new ArrayList<>(songCollection); 
- 
-        return allSongs; 
-    } 
- 
-    @Override 
-    public Song getSongById(int songId) { 
- 
-        Song song = playlist.get(songId); 
-        if (song == null) { 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND); 
-        } 
- 
-        return song; 
-    } 
- 
-    @Override 
-    public Song addSong(Song song) { 
- 
-        song.setsongId(uniquesongId); 
-        playlist.put(uniquesongId, song); 
- 
-        uniquesongId += 1; 
-        return song; 
-    } 
- 
-    @Override 
-    public Song updateSong(int songId, Song song) { 
- 
-        Song existingSong = playlist.get(songId); 
-        if (existingSong == null) { 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND); 
-        } 
-        if (song.getSongName() != null) { 
-            existingSong.setSongName(song.getSongName()); 
-        } 
-        if (song.getLyricist() != null) { 
-            existingSong.setLyricist(song.getLyricist()); 
-        } 
-        if (song.getSinger() != null) { 
-            existingSong.setSinger(song.getSinger()); 
-        } 
-        if (song.getMusicDirector() != null) { 
-            existingSong.setMusicDirector(song.getMusicDirector()); 
-        } 
- 
-        return existingSong; 
-    } 
- 
-    @Override 
-    public void deleteSong(int songId) { 
- 
-        Song song = playlist.get(songId); 
-        if (song == null) { 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND); 
-        } else { 
-            playlist.remove(songId); 
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT); 
-        } 
-    } 
+package com.example.song.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import java.util.*;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
+
+import com.example.song.repository.SongRepository;
+import com.example.song.repository.SongJpaRepository;
+import com.example.song.model.Song;
+
+@Service
+
+public class SongJpaService implements SongRepository{
+     @Autowired
+  private SongJpaRepository songJpaRepository;
+    
+    @Override
+    public ArrayList<Song> getAllSongs(){
+        List<Song> songList=songJpaRepository.findAll();
+        ArrayList<Song> songs=new ArrayList<>(songList);
+        return songs;
+        }
+
+   public Song getSongById(int songId) {
+     try{
+
+      Song song = songJpaRepository.findById(songId).get();
+      return song;
+    }
+    catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+  }
+
+ @Override
+  public Song addSong(Song song) {
+     songJpaRepository.save(song);
+      return song;
+  }
+
+   @Override
+  public Song updateSong(int songId, Song song){
+    try {
+      Song newSong = songJpaRepository.findById(songId).get();
+      if (song.getSongName() != null) {
+        newSong.setSongName(song.getSongName());
+      }
+      if (song.getLyricist() != null) {
+        newSong.setLyricist(song.getLyricist());
+      }
+       if (song.getSinger() != null) {
+        newSong.setSinger(song.getSinger());
+      }
+       if (song.getMusicDirector() != null) {
+        newSong.setMusicDirector(song.getMusicDirector());
+      }
+      songJpaRepository.save(newSong);
+
+      return newSong;
+
+    } catch(Exception e){
+
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+  }
+
+      @Override
+  public void deleteSong(int songId) {
+       try {
+
+      songJpaRepository.deleteById(songId);
+    } catch (Exception e) {
+
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+  }
+    
 }

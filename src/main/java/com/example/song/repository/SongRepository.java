@@ -1,8 +1,9 @@
 // Write your code here
 // Write your code here
-package com.example.song; 
+package com.example.song.repository;
  
 import java.util.*; 
+import com.example.song.model.Song;
  
 public interface SongRepository { 
  
@@ -16,3 +17,4 @@ public interface SongRepository {
  
     void deleteSong(int songId); 
 }
+
