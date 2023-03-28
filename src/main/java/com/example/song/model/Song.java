@@ -16,17 +16,17 @@ import javax.persistence.*;
 public class Song { 
 
 
-  @Id
-    @Column(name="songId")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   @Id
+    @Column(name="songid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int songId; 
-    @Column(name="songName")
+    @Column(name="songname")
     private String songName; 
     @Column(name="lyricist")
     private String lyricist; 
     @Column(name="singer")
     private String singer; 
-    @Column(name="musicDirector")
+    @Column(name="musicdirector")
     private String musicDirector; 
 
     public Song(){ }
